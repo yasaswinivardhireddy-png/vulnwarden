@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: uv sync --extra gemini
+      - name: Lint
+        run: uv run ruff check src tests benchmarks
+      - name: Unit and integration tests
+        run: uv run pytest --cov=vulnwarden --cov-report=term
+      - name: End-to-end benchmark (recorded intel, no network)
+        run: uv run python benchmarks/run_benchmark.py
+
+  security-gate:
+    name: Security gate (VulnWarden scans itself)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+        with:
+          python-version: "3.12"
+      - run: uv sync
+      - name: Scan, fail on high or critical findings
+        run: >-
+          uv run vulnwarden scan . --config .github/vulnwarden-self.yaml --fail-on high
+          --markdown reports/self-scan.md --html reports/dashboard.html --cbom reports/cbom.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: vulnwarden-self-scan
+          path: reports/

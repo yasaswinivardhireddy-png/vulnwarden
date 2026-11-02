@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: Shop API
+  version: 1.0.0
+servers:
+  - url: http://api.shop.example.com/v1
+components:
+  securitySchemes:
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: api_key
+paths:
+  /orders:
+    get:
+      security:
+        - apiKeyQuery: []
+      responses:
+        "200":
+          description: Orders for the caller
+  /admin/refunds:
+    post:
+      responses:
+        "200":
+          description: Refund issued

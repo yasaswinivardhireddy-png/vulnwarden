@@ -1,0 +1,8 @@
+exposure: internet-facing
+exclude:
+  - make_certs.py
+  - reports
+owners:
+  - shop-maintainer
+escalation_contacts:
+  - appsec-lead

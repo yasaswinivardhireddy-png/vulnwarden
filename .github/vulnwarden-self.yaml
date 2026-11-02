@@ -1,0 +1,5 @@
+# Self-scan configuration: the demo app, test fixtures and recorded intel are intentionally excluded.
+exclude:
+  - examples
+  - tests
+  - benchmarks/intel-cache

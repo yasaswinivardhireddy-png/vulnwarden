@@ -1,0 +1,51 @@
+# Copy into .github/workflows/ of a repository you want VulnWarden to look after.
+# Least privilege: the job token can only write contents and pull requests in this one repository,
+# and branch protection should require a human approval before any remediation PR can merge.
+name: VulnWarden
+
+on:
+  schedule:
+    - cron: "42 3 * * 1"   # weekly: scan, fix, validate and open a remediation PR
+    - cron: "17 * * * *"   # hourly: remind owners about idle remediation PRs, escalate past the SLA
+  pull_request:
+    types: [closed]        # event-driven: verify closure when a remediation PR merges
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  vulnwarden:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      VULNWARDEN_SLACK_WEBHOOK: ${{ secrets.VULNWARDEN_SLACK_WEBHOOK }}
+      VULNWARDEN_TEAMS_WEBHOOK: ${{ secrets.VULNWARDEN_TEAMS_WEBHOOK }}
+      GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+        with:
+          python-version: "3.12"
+      - run: uv tool install "vulnwarden[gemini] @ git+https://github.com/yasaswinivardhireddy-png/vulnwarden"
+      - name: Restore VulnWarden state (findings history, PRs, notifications, audit log)
+        uses: actions/cache@v6
+        with:
+          path: .vulnwarden
+          key: vulnwarden-state-${{ github.run_id }}
+          restore-keys: vulnwarden-state-
+
+      - name: Remediate
+        if: github.event_name == 'workflow_dispatch' || github.event.schedule == '42 3 * * 1'
+        run: vulnwarden remediate . --github "${{ github.repository }}" --yes --report vulnwarden-report.md
+
+      - name: Follow up on open remediation PRs
+        if: github.event.schedule == '17 * * * *'
+        run: vulnwarden monitor --github "${{ github.repository }}" --db .vulnwarden/state.db
+
+      - name: Verify closure after merge
+        if: >-
+          github.event_name == 'pull_request' && github.event.pull_request.merged &&
+          contains(github.event.pull_request.labels.*.name, 'security-remediation')
+        run: vulnwarden reconcile . --github "${{ github.repository }}"

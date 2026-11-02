@@ -1,0 +1,39 @@
+# Issues deliberately planted in examples/vulnerable-shop.
+# Dependency advisories are not listed: they come from OSV for the pinned versions in requirements.txt.
+planted:
+  - {rule: VW-PY-HARDCODED-SECRET, path: shop/config.py}
+  - {rule: VW-PY-SQL-INJECTION, path: shop/db.py}
+  - {rule: VW-PY-YAML-LOAD, path: shop/catalog.py}
+  - {rule: VW-PY-SHELL, path: shop/ops.py}
+  - {rule: VW-PY-TLS-VERIFY-OFF, path: shop/http_client.py}
+  - {rule: VW-PY-PICKLE, path: shop/auth.py}
+  - {rule: VW-PY-FLASK-DEBUG, path: shop/web.py}
+  - {rule: VW-PY-EVAL, path: shop/report.py}
+  - {rule: VW-PY-MKTEMP, path: shop/tmp.py}
+  - {rule: VW-CRYPTO-WEAK-HASH, path: shop/cache.py}
+  - {rule: VW-CRYPTO-WEAK-HASH, path: shop/auth.py}
+  - {rule: VW-CRYPTO-ECB-MODE, path: shop/crypto_box.py}
+  - {rule: VW-CRYPTO-SHORT-KEY, path: shop/crypto_box.py}
+  - {rule: VW-CRYPTO-LEGACY-TLS, path: shop/tls.py}
+  - {rule: VW-CRYPTO-LEGACY-TLS, path: deploy/nginx.conf, count: 2}
+  - {rule: VW-CRYPTO-WEAK-TLS-CIPHER, path: deploy/nginx.conf, count: 2}
+  - {rule: VW-CERT-EXPIRING, path: certs/legacy.pem}
+  - {rule: VW-CERT-WEAK-SIGNATURE, path: certs/legacy.pem}
+  - {rule: VW-CRYPTO-SHORT-KEY, path: certs/legacy.pem}
+  - {rule: VW-CERT-LONG-VALIDITY, path: certs/legacy.pem}
+  - {rule: VW-CERT-SELF-SIGNED, path: certs/legacy.pem}
+  - {rule: VW-CRYPTO-ROTATION-DUE, path: certs/legacy.pem}
+  - {rule: VW-CRYPTO-PRIVATE-KEY, path: certs/server.key}
+  - {rule: VW-CRYPTO-DEPRECATED-LIB, path: requirements.txt}
+  - {rule: VW-DOCKER-EOL-BASE, path: Dockerfile}
+  - {rule: VW-DOCKER-SECRET, path: Dockerfile}
+  - {rule: VW-DOCKER-REMOTE-ADD, path: Dockerfile}
+  - {rule: VW-DOCKER-ROOT, path: Dockerfile}
+  - {rule: VW-API-CLEARTEXT, path: api/openapi.yaml}
+  - {rule: VW-API-KEY-IN-QUERY, path: api/openapi.yaml}
+  - {rule: VW-API-NO-AUTH, path: api/openapi.yaml}
+
+# Expected correlation of the sample third-party reports in examples/vulnerable-shop/reports.
+correlation:
+  cross_scanner_duplicates: 3  # Semgrep SQL injection + TLS verification, Trivy PyYAML
+  stale: 4                     # Semgrep: deleted file, removed code; Trivy: already-upgraded requests, undeclared Django

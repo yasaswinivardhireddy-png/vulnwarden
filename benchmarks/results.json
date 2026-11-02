@@ -1,0 +1,57 @@
+{
+  "generated": "2026-11-02",
+  "intel": "recorded cache",
+  "planted_detected": 33,
+  "planted_total": 33,
+  "unexpected_findings": [],
+  "dependency_advisories": 38,
+  "vulnerable_packages": 7,
+  "unique_cves": 34,
+  "kev_findings": 0,
+  "correlation": {
+    "reclassified": 1,
+    "duplicate_advisories": 32,
+    "duplicates": 3,
+    "stale": 4
+  },
+  "crypto_assets": 15,
+  "plans_total": 42,
+  "plans_auto": 20,
+  "results": {
+    "applied": 17,
+    "reverted": 1,
+    "already-resolved": 2,
+    "manual": 22
+  },
+  "applied_by_kind": {
+    "dependency": 6,
+    "codemod": 11
+  },
+  "findings_resolved_by_fixes": 49,
+  "validated_commits": 17,
+  "open_before": 71,
+  "open_after": 22,
+  "open_before_by_severity": {
+    "critical": 3,
+    "high": 36,
+    "medium": 27,
+    "low": 5
+  },
+  "open_after_by_severity": {
+    "critical": 2,
+    "high": 13,
+    "medium": 5,
+    "low": 2
+  },
+  "tests_after_fixes_passed": true,
+  "audit_entries": 23,
+  "audit_chain_intact": true,
+  "scan_seconds": 0.44,
+  "agent_seconds": 61.16,
+  "reverted": [
+    {
+      "fix": "Hardcoded secret in source code",
+      "reason": "Tests failed after the change (exit 2); change rolled back."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+# Example enterprise cryptography standard. Pass with --policy or set crypto_policy in vulnwarden.yaml.
+name: Enterprise Cryptography Standard v2026.2
+disallowed_algorithms: [MD5, SHA1, DES, 3DES, RC4, RC2, BLOWFISH]
+disallowed_modes: [ECB]
+min_key_sizes:
+  RSA: 3072      # NIST SP 800-57: 2048-bit RSA is acceptable only through 2030
+  DSA: 3072
+  DH: 3072
+  EC: 256
+  ECDSA: 256
+min_tls_version: "1.2"
+cert_expiry_warning_days: 45
+cert_max_validity_days: 398
+disallowed_signature_hashes: [MD5, SHA1]
+flag_self_signed: true
+forbid_private_keys_in_repo: true
+key_rotation_days: 365
+deprecated_libraries:
+  PyPI: [pycrypto, python-ecdsa]
+  npm: [crypto-js]

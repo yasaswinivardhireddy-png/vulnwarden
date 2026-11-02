@@ -1,0 +1,73 @@
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2026-09-14T10:12:44Z",
+  "ArtifactName": "vulnerable-shop:1.4.0",
+  "ArtifactType": "container_image",
+  "Metadata": {"OS": {"Family": "debian", "Name": "10.13"}},
+  "Results": [
+    {
+      "Target": "vulnerable-shop:1.4.0 (debian 10.13)",
+      "Class": "os-pkgs",
+      "Type": "debian",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2023-0286",
+          "PkgName": "openssl",
+          "InstalledVersion": "1.1.1n-0+deb10u3",
+          "FixedVersion": "1.1.1n-0+deb10u4",
+          "Severity": "HIGH",
+          "Title": "openssl: X.400 address type confusion in X.509 GeneralName",
+          "CweIDs": ["CWE-843"],
+          "CVSS": {"nvd": {"V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H", "V3Score": 7.4}}
+        },
+        {
+          "VulnerabilityID": "CVE-2022-37434",
+          "PkgName": "zlib1g",
+          "InstalledVersion": "1:1.2.11.dfsg-1+deb10u1",
+          "FixedVersion": "1:1.2.11.dfsg-1+deb10u2",
+          "Severity": "CRITICAL",
+          "Title": "zlib: heap-based buffer over-read and overflow in inflate() via a large gzip header extra field",
+          "CweIDs": ["CWE-787"],
+          "CVSS": {"nvd": {"V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H", "V3Score": 9.8}}
+        }
+      ]
+    },
+    {
+      "Target": "requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2020-14343",
+          "PkgName": "PyYAML",
+          "InstalledVersion": "5.3.1",
+          "FixedVersion": "5.4",
+          "Severity": "HIGH",
+          "Title": "PyYAML: incomplete fix for CVE-2020-1747",
+          "CweIDs": ["CWE-20"],
+          "CVSS": {"nvd": {"V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H", "V3Score": 9.8}}
+        },
+        {
+          "VulnerabilityID": "CVE-2018-18074",
+          "PkgName": "requests",
+          "InstalledVersion": "2.19.1",
+          "FixedVersion": "2.20.0",
+          "Severity": "HIGH",
+          "Title": "python-requests: redirect from HTTPS to HTTP does not remove Authorization header",
+          "CweIDs": ["CWE-522"],
+          "CVSS": {"nvd": {"V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N", "V3Score": 7.5}}
+        },
+        {
+          "VulnerabilityID": "CVE-2019-19844",
+          "PkgName": "Django",
+          "InstalledVersion": "2.2.8",
+          "FixedVersion": "2.2.9",
+          "Severity": "CRITICAL",
+          "Title": "Django: crafted email address allows account takeover",
+          "CweIDs": ["CWE-640"],
+          "CVSS": {"nvd": {"V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H", "V3Score": 9.8}}
+        }
+      ]
+    }
+  ]
+}

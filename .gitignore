@@ -12,6 +12,6 @@ build/
 *.db
 *.db-journal
 .vulnwarden/
-reports/
+/reports/
 examples/vulnerable-shop/certs/
 uv.lock
